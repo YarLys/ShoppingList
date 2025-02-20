@@ -12,15 +12,19 @@ import com.example.shoppinglist.data.db.ShoppingDatabase
 import com.example.shoppinglist.data.repositories.ShoppingRepository
 import com.example.shoppinglist.other.ShoppingItemAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class ShoppingListActivity : AppCompatActivity() {
+class ShoppingListActivity : AppCompatActivity(), KodeinAware {
+
+    override val kodein by kodein()
+    private val factory: ShoppingViewModelFactory by instance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping)
-
-        val database = ShoppingDatabase(this)
-        val repository = ShoppingRepository(database)
-        val factory = ShoppingViewModelFactory(repository)
 
         val viewModel = ViewModelProviders.of(this, factory).get(ShoppingViewModel::class.java)
 
